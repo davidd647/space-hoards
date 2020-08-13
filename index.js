@@ -43,20 +43,21 @@ function draw() {
   ctx.rotate(-playerToMouseAngle);
   ctx.translate(-playerX, -playerY);
 
-  ctx.font = "30px Arial";
-  ctx.fillStyle = "#DDDDDD";
-  ctx.fillText(
-    Math.round(playerToMouseAngle * (180 / 3.14159) * 100) / 100 + "deg",
-    550,
-    350
-  );
+  // debug angle text...
+  // ctx.font = "30px Arial";
+  // ctx.fillStyle = "#DDDDDD";
+  // ctx.fillText(
+  //   Math.round(playerToMouseAngle * (180 / 3.14159) * 100) / 100 + "deg",
+  //   550,
+  //   350
+  // );
 
   // debug line...
-  ctx.beginPath();
-  ctx.moveTo(playerX, playerY);
-  ctx.lineTo(mouseX, mouseY);
-  ctx.strokeStyle = "red";
-  ctx.stroke();
+  // ctx.beginPath();
+  // ctx.moveTo(playerX, playerY);
+  // ctx.lineTo(mouseX, mouseY);
+  // ctx.strokeStyle = "red";
+  // ctx.stroke();
 }
 
 function newFrame() {
@@ -122,4 +123,6 @@ $("body").on("mousemove", function (e) {
         Math.sin(Math.abs(verticalDistance) / tempHypoteneus);
     }
   }
+
+  playerToMouseAngle += (90 * 3.14159) / 180;
 });
