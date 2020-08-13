@@ -32,6 +32,11 @@ function logic() {
 
 var flameX;
 var flameY;
+var flameSize = 10;
+var flameGrow = true;
+
+var trajectoryX;
+var trajectoryY;
 
 function draw() {
   ctx.clearRect(0, 0, canvas.width, canvas.height);
@@ -39,11 +44,36 @@ function draw() {
   ctx.drawImage(imgBg, 0, 0);
 
   if (mouseIsDown) {
+    trajectoryX = Math.cos(playerToMouseAngle - 90 * (Math.PI / 180));
+    trajectoryY = Math.sin(playerToMouseAngle - 90 * (Math.PI / 180));
+
+    playerX += trajectoryX;
+    playerY += trajectoryY;
+
     flameX = 30 * Math.cos(playerToMouseAngle + 90 * (Math.PI / 180));
     flameY = 30 * Math.sin(playerToMouseAngle + 90 * (Math.PI / 180));
 
+    if (flameSize <= 10) {
+      flameGrow = true;
+    } else if (flameSize >= 15) {
+      flameGrow = false;
+    }
+
+    if (flameGrow) {
+      flameSize += Math.random() * 0.5;
+    } else {
+      flameSize -= Math.random() * 0.5;
+    }
+
     ctx.beginPath();
-    ctx.arc(playerX + flameX, playerY + flameY, 25, 0, 2 * Math.PI, false);
+    ctx.arc(
+      playerX + flameX,
+      playerY + flameY,
+      flameSize,
+      0,
+      2 * Math.PI,
+      false
+    );
     ctx.fillStyle = "white";
     ctx.fill();
     ctx.stroke();
