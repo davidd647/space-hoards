@@ -38,9 +38,18 @@ function draw() {
   // rotate the player
   ctx.translate(playerX, playerY);
   ctx.rotate(playerToMouseAngle);
-  ctx.drawImage(imgPlayerFrame1, -25, -20, 25, 20);
+  ctx.drawImage(imgPlayerFrame1, -25, -20, 50, 40);
+  // ctx.drawImage(imgPlayerFrame1, -25, -20, 25, 20);
   ctx.rotate(-playerToMouseAngle);
   ctx.translate(-playerX, -playerY);
+
+  ctx.font = "30px Arial";
+  ctx.fillStyle = "#DDDDDD";
+  ctx.fillText(
+    Math.round(playerToMouseAngle * (180 / 3.14159) * 100) / 100 + "deg",
+    550,
+    350
+  );
 
   // debug line...
   ctx.beginPath();
@@ -57,6 +66,8 @@ function newFrame() {
 
 setInterval(newFrame, 10);
 
+var tempHypoteneus = 0;
+
 $("body").on("mousemove", function (e) {
   mouseX = e.offsetX;
   mouseY = e.offsetY;
@@ -64,11 +75,51 @@ $("body").on("mousemove", function (e) {
   horizontalDistance = mouseX - playerX;
   verticalDistance = mouseY - playerY;
 
-  playerToMouseAngle = Math.tan(verticalDistance / horizontalDistance);
-
-  console.log(
-    Math.round(playerToMouseAngle * 100) / 100,
-    verticalDistance,
-    horizontalDistance
+  // calc length of hypoteneus
+  tempHypoteneus = Math.sqrt(
+    horizontalDistance * horizontalDistance +
+      verticalDistance * verticalDistance
   );
+
+  if (horizontalDistance >= 0 && verticalDistance >= 0) {
+    // lower-right quadrant:
+    if (horizontalDistance > verticalDistance) {
+      playerToMouseAngle = Math.sin(verticalDistance / tempHypoteneus);
+    } else {
+      playerToMouseAngle =
+        (90 * 3.14159) / 180 - Math.sin(horizontalDistance / tempHypoteneus);
+    }
+  } else if (horizontalDistance <= 0 && verticalDistance >= 0) {
+    // lower-left quadrant:
+    if (Math.abs(horizontalDistance) < verticalDistance) {
+      playerToMouseAngle =
+        (90 * 3.14159) / 180 +
+        Math.sin(Math.abs(horizontalDistance) / tempHypoteneus);
+    } else {
+      playerToMouseAngle =
+        (180 * 3.14159) / 180 -
+        Math.sin(Math.abs(verticalDistance) / tempHypoteneus);
+    }
+  } else if (horizontalDistance <= 0 && verticalDistance <= 0) {
+    // upper-left quadrant:
+    if (Math.abs(horizontalDistance) > Math.abs(verticalDistance)) {
+      playerToMouseAngle =
+        (180 * 3.14159) / 180 +
+        Math.sin(Math.abs(verticalDistance) / tempHypoteneus);
+    } else {
+      playerToMouseAngle =
+        (270 * 3.14159) / 180 -
+        Math.sin(Math.abs(horizontalDistance) / tempHypoteneus);
+    }
+  } else if (horizontalDistance >= 0 && verticalDistance <= 0) {
+    // upper-right quadrant
+    if (horizontalDistance < Math.abs(verticalDistance)) {
+      playerToMouseAngle =
+        (270 * 3.14159) / 180 + Math.sin(horizontalDistance / tempHypoteneus);
+    } else {
+      playerToMouseAngle =
+        (360 * 3.14159) / 180 -
+        Math.sin(Math.abs(verticalDistance) / tempHypoteneus);
+    }
+  }
 });
