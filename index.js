@@ -12,8 +12,6 @@ var verticalDistance;
 var horizontalDistance;
 var playerToMouseAngle;
 
-console.log("hello how do you do");
-
 function logic() {
   // we want the angle to rotate the player towards the mouse... so...
   // form a right-angle triangle from player to mouse... I mean, like, in your mind...
@@ -39,6 +37,10 @@ var trajectoryIncrementX = 0;
 var trajectoryIncrementY = 0;
 var trajectoryX = 0;
 var trajectoryY = 0;
+
+var missileIsPrepared = true;
+var missiles = [];
+var missileToDelete = null;
 
 function draw() {
   ctx.clearRect(0, 0, canvas.width, canvas.height);
@@ -82,6 +84,45 @@ function draw() {
     ctx.fillStyle = "white";
     ctx.fill();
     ctx.stroke();
+  }
+
+  if (spaceIsDown) {
+    if (missileIsPrepared) {
+      // fire a missile...
+      missiles.push({
+        posX: playerX,
+        posY: playerY,
+        displaceX: 2 * Math.cos(playerToMouseAngle + 90 * (Math.PI / 180)),
+        displaceY: 2 * Math.sin(playerToMouseAngle + 90 * (Math.PI / 180)),
+      });
+
+      missileIsPrepared = false;
+    }
+  } else if (!spaceIsDown) {
+    missileIsPrepared = true;
+  }
+
+  missiles.forEach((missile, i) => {
+    missile.posX += missile.displaceX;
+    missile.posY += missile.displaceY;
+
+    ctx.beginPath();
+    ctx.arc(missile.posX, missile.posY, 5, 0, 2 * Math.PI, false);
+    ctx.fillStyle = "white";
+    ctx.fill();
+    ctx.stroke();
+
+    // mark missile for splicing...
+    if (missile.posX < 0 || missile.posX >= canvas.width) {
+      missileToDelete = i;
+    } else if (missile.posY < 0 || missile.posY >= canvas.height) {
+      missileToDelete = i;
+    }
+  });
+
+  if (missileToDelete != null) {
+    missiles.splice(missileToDelete, 1);
+    missileToDelete = null;
   }
 
   // rotate the player
@@ -188,8 +229,16 @@ $("body").on("mouseup", function (e) {
   // console.log("fire boosters (approach mouse location)");
 });
 
+var spaceIsDown = false;
+
 $("body").on("keydown", function (e) {
   if (e.keyCode == 32) {
-    console.log("fire missile");
+    spaceIsDown = true;
+  }
+});
+
+$("body").on("keyup", function (e) {
+  if (e.keyCode == 32) {
+    spaceIsDown = false;
   }
 });
