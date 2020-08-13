@@ -30,10 +30,24 @@ function logic() {
   // console.log("degrees: " + playerToMouseAngle * (180 / 3.14));
 }
 
+var flameX;
+var flameY;
+
 function draw() {
   ctx.clearRect(0, 0, canvas.width, canvas.height);
 
   ctx.drawImage(imgBg, 0, 0);
+
+  if (mouseIsDown) {
+    flameX = 30 * Math.cos(playerToMouseAngle + 90 * (Math.PI / 180));
+    flameY = 30 * Math.sin(playerToMouseAngle + 90 * (Math.PI / 180));
+
+    ctx.beginPath();
+    ctx.arc(playerX + flameX, playerY + flameY, 25, 0, 2 * Math.PI, false);
+    ctx.fillStyle = "white";
+    ctx.fill();
+    ctx.stroke();
+  }
 
   // rotate the player
   ctx.translate(playerX, playerY);
@@ -88,47 +102,55 @@ $("body").on("mousemove", function (e) {
       playerToMouseAngle = Math.sin(verticalDistance / tempHypoteneus);
     } else {
       playerToMouseAngle =
-        (90 * 3.14159) / 180 - Math.sin(horizontalDistance / tempHypoteneus);
+        (90 * Math.PI) / 180 - Math.sin(horizontalDistance / tempHypoteneus);
     }
   } else if (horizontalDistance <= 0 && verticalDistance >= 0) {
     // lower-left quadrant:
     if (Math.abs(horizontalDistance) < verticalDistance) {
       playerToMouseAngle =
-        (90 * 3.14159) / 180 +
+        (90 * Math.PI) / 180 +
         Math.sin(Math.abs(horizontalDistance) / tempHypoteneus);
     } else {
       playerToMouseAngle =
-        (180 * 3.14159) / 180 -
+        (180 * Math.PI) / 180 -
         Math.sin(Math.abs(verticalDistance) / tempHypoteneus);
     }
   } else if (horizontalDistance <= 0 && verticalDistance <= 0) {
     // upper-left quadrant:
     if (Math.abs(horizontalDistance) > Math.abs(verticalDistance)) {
       playerToMouseAngle =
-        (180 * 3.14159) / 180 +
+        (180 * Math.PI) / 180 +
         Math.sin(Math.abs(verticalDistance) / tempHypoteneus);
     } else {
       playerToMouseAngle =
-        (270 * 3.14159) / 180 -
+        (270 * Math.PI) / 180 -
         Math.sin(Math.abs(horizontalDistance) / tempHypoteneus);
     }
   } else if (horizontalDistance >= 0 && verticalDistance <= 0) {
     // upper-right quadrant
     if (horizontalDistance < Math.abs(verticalDistance)) {
       playerToMouseAngle =
-        (270 * 3.14159) / 180 + Math.sin(horizontalDistance / tempHypoteneus);
+        (270 * Math.PI) / 180 + Math.sin(horizontalDistance / tempHypoteneus);
     } else {
       playerToMouseAngle =
-        (360 * 3.14159) / 180 -
+        (360 * Math.PI) / 180 -
         Math.sin(Math.abs(verticalDistance) / tempHypoteneus);
     }
   }
 
-  playerToMouseAngle += (90 * 3.14159) / 180;
+  playerToMouseAngle += (90 * Math.PI) / 180;
 });
 
-$("body").on("click", function (e) {
-  console.log("fire boosters (approach mouse location)");
+var mouseIsDown = false;
+
+$("body").on("mousedown", function (e) {
+  mouseIsDown = true;
+  // console.log("fire boosters (approach mouse location)");
+});
+
+$("body").on("mouseup", function (e) {
+  mouseIsDown = false;
+  // console.log("fire boosters (approach mouse location)");
 });
 
 $("body").on("keydown", function (e) {
