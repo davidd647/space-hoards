@@ -19,15 +19,15 @@ function logic() {
   // form a right-angle triangle from player to mouse... I mean, like, in your mind...
   //  where the hypoteneus leads directly from the player to the mouse, and
   //  the opposite side from the player is vertical, and the adjacent side from the player is horizontal...
-  verticalDistance = mouseY - playerY;
-  horizontalDistance = mouseX - playerX;
+  // horizontalDistance = mouseX - playerX;
+  // verticalDistance = mouseY - playerY;
+  // console.log(verticalDistance, horizontalDistance);
   // to find the angle between them, you need to use SOH CAH TOA... remember?! :D
   //  we already have the stuff for TOA (tangent(opposite / adjacent))...
-  playerToMouseAngle = Math.tan(verticalDistance / horizontalDistance);
+  // playerToMouseAngle = Math.tan(verticalDistance / horizontalDistance);
   //  which is probably negative of what we want... I dunno... we'll figure it out lol
   //    shoot... it's in radians instead of degrees... feels weird, but let's roll with it...
-
-  console.log("degrees: " + playerToMouseAngle * (180 / 3.14));
+  // console.log("degrees: " + playerToMouseAngle * (180 / 3.14));
 }
 
 function draw() {
@@ -41,6 +41,13 @@ function draw() {
   ctx.drawImage(imgPlayerFrame1, -25, -20, 25, 20);
   ctx.rotate(-playerToMouseAngle);
   ctx.translate(-playerX, -playerY);
+
+  // debug line...
+  ctx.beginPath();
+  ctx.moveTo(playerX, playerY);
+  ctx.lineTo(mouseX, mouseY);
+  ctx.strokeStyle = "red";
+  ctx.stroke();
 }
 
 function newFrame() {
@@ -53,4 +60,15 @@ setInterval(newFrame, 10);
 $("body").on("mousemove", function (e) {
   mouseX = e.offsetX;
   mouseY = e.offsetY;
+
+  horizontalDistance = mouseX - playerX;
+  verticalDistance = mouseY - playerY;
+
+  playerToMouseAngle = Math.tan(verticalDistance / horizontalDistance);
+
+  console.log(
+    Math.round(playerToMouseAngle * 100) / 100,
+    verticalDistance,
+    horizontalDistance
+  );
 });
