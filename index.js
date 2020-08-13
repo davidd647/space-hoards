@@ -126,3 +126,13 @@ $("body").on("mousemove", function (e) {
 
   playerToMouseAngle += (90 * 3.14159) / 180;
 });
+
+$("body").on("click", function (e) {
+  console.log("fire boosters (approach mouse location)");
+});
+
+$("body").on("keydown", function (e) {
+  if (e.keyCode == 32) {
+    console.log("fire missile");
+  }
+});
