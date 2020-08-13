@@ -35,20 +35,25 @@ var flameY;
 var flameSize = 10;
 var flameGrow = true;
 
-var trajectoryX;
-var trajectoryY;
+var trajectoryIncrementX = 0;
+var trajectoryIncrementY = 0;
+var trajectoryX = 0;
+var trajectoryY = 0;
 
 function draw() {
   ctx.clearRect(0, 0, canvas.width, canvas.height);
 
   ctx.drawImage(imgBg, 0, 0);
 
-  if (mouseIsDown) {
-    trajectoryX = Math.cos(playerToMouseAngle - 90 * (Math.PI / 180));
-    trajectoryY = Math.sin(playerToMouseAngle - 90 * (Math.PI / 180));
+  playerX += trajectoryX;
+  playerY += trajectoryY;
 
-    playerX += trajectoryX;
-    playerY += trajectoryY;
+  if (mouseIsDown) {
+    trajectoryIncrementX = Math.cos(playerToMouseAngle - 90 * (Math.PI / 180));
+    trajectoryIncrementY = Math.sin(playerToMouseAngle - 90 * (Math.PI / 180));
+
+    trajectoryX += trajectoryIncrementX * 0.01;
+    trajectoryY += trajectoryIncrementY * 0.01;
 
     flameX = 30 * Math.cos(playerToMouseAngle + 90 * (Math.PI / 180));
     flameY = 30 * Math.sin(playerToMouseAngle + 90 * (Math.PI / 180));
