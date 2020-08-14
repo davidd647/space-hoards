@@ -2,6 +2,9 @@ var canvas = document.getElementById("myCanvas");
 var ctx = canvas.getContext("2d");
 var imgBg = document.getElementById("img-bg");
 var imgPlayerFrame1 = document.getElementById("img-player-frame1");
+var imgPlayerFrame2 = document.getElementById("img-player-frame2");
+var imgPlayerFrame3 = document.getElementById("img-player-frame3");
+var playerAnimationItterator = 0;
 
 var playerX = 550;
 var playerY = 350;
@@ -128,8 +131,18 @@ function draw() {
   // rotate the player
   ctx.translate(playerX, playerY);
   ctx.rotate(playerToMouseAngle);
-  ctx.drawImage(imgPlayerFrame1, -25, -20, 50, 40);
-  // ctx.drawImage(imgPlayerFrame1, -25, -20, 25, 20);
+
+  playerAnimationItterator++;
+  if (spaceIsDown) {
+    ctx.drawImage(imgPlayerFrame3, -25, -20, 50, 40);
+  } else if (playerAnimationItterator < 50) {
+    ctx.drawImage(imgPlayerFrame1, -25, -20, 50, 40);
+  } else if (playerAnimationItterator < 100) {
+    ctx.drawImage(imgPlayerFrame2, -25, -20, 50, 40);
+  } else {
+    playerAnimationItterator = 0;
+  }
+
   ctx.rotate(-playerToMouseAngle);
   ctx.translate(-playerX, -playerY);
 
