@@ -29,6 +29,22 @@ function logic() {
   //  which is probably negative of what we want... I dunno... we'll figure it out lol
   //    shoot... it's in radians instead of degrees... feels weird, but let's roll with it...
   // console.log("degrees: " + playerToMouseAngle * (180 / 3.14));
+  enemyItterator++;
+
+  if (enemyItterator >= 100) {
+    enemies.push({
+      posX: 0,
+      posY: Math.random() * canvas.height,
+      displaceX: Math.random() * 1.5,
+      displaceY: Math.random() * 3 - 1.5,
+    });
+    enemyItterator = 0;
+  }
+
+  enemies.forEach((enemy) => {
+    enemy.posX += enemy.displaceX;
+    enemy.posY += enemy.displaceY;
+  });
 }
 
 var flameX;
@@ -44,6 +60,9 @@ var trajectoryY = 0;
 var missileIsPrepared = true;
 var missiles = [];
 var missileToDelete = null;
+
+var enemyItterator = 0;
+var enemies = [];
 
 function draw() {
   ctx.clearRect(0, 0, canvas.width, canvas.height);
@@ -127,6 +146,14 @@ function draw() {
     missiles.splice(missileToDelete, 1);
     missileToDelete = null;
   }
+
+  enemies.forEach((enemy) => {
+    ctx.beginPath();
+    ctx.arc(enemy.posX, enemy.posY, 10, 0, 2 * Math.PI, false);
+    ctx.fillStyle = "red";
+    ctx.fill();
+    ctx.stroke();
+  });
 
   // rotate the player
   ctx.translate(playerX, playerY);
