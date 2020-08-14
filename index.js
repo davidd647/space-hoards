@@ -232,12 +232,12 @@ $("body").on("mousemove", function (e) {
 
 var mouseIsDown = false;
 
-$("body").on("mousedown", function (e) {
+$("canvas").on("mousedown", function (e) {
   mouseIsDown = true;
   // console.log("fire boosters (approach mouse location)");
 });
 
-$("body").on("mouseup", function (e) {
+$("canvas").on("mouseup", function (e) {
   mouseIsDown = false;
   // console.log("fire boosters (approach mouse location)");
 });
@@ -254,4 +254,12 @@ $("body").on("keyup", function (e) {
   if (e.keyCode == 32) {
     spaceIsDown = false;
   }
+});
+
+$("#missile-alt").on("mousedown", function (e) {
+  spaceIsDown = true;
+});
+
+$("#missile-alt").on("mouseup", function (e) {
+  spaceIsDown = false;
 });
