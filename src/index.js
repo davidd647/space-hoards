@@ -1,18 +1,12 @@
 import $ from "jquery";
-import webgazer from "webgazer";
+// import webgazer from "webgazer";
 
-console.dir(webgazer);
-
-// webgazer
-//   .setGazeListener(function (data, elapsedTime) {
-//     if (data == null) {
-//       return;
-//     }
-//     var xprediction = data.x; //these x coordinates are relative to the viewport
-//     var yprediction = data.y; //these y coordinates are relative to the viewport
-//     console.log(elapsedTime); //elapsed time is based on time since begin was called
-//   })
-//   .begin();
+webgazer
+  .setGazeListener(function (data, elapsedTime) {
+    var xprediction = data.x;
+    var yprediction = data.y;
+  })
+  .begin();
 
 var canvas = document.getElementById("myCanvas");
 var ctx = canvas.getContext("2d");
