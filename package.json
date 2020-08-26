@@ -1,0 +1,29 @@
+{
+  "name": "space-hoards",
+  "version": "1.0.0",
+  "description": "README file..",
+  "main": "index.js",
+  "scripts": {
+    "start": "parcel src/index.html",
+    "build": "parcel build src/index.html",
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d dist"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/davidd647/space-hoards.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/davidd647/space-hoards/issues"
+  },
+  "homepage": "https://github.com/davidd647/space-hoards#readme",
+  "dependencies": {
+    "jquery": "^3.5.1",
+    "webgazer": "^1.0.1"
+  },
+  "devDependencies": {
+    "parcel-bundler": "^1.12.4"
+  }
+}
