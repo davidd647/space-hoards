@@ -1,4 +1,7 @@
 import $ from "jquery";
+import webgazer from "webgazer";
+
+console.dir(webgazer);
 
 // webgazer
 //   .setGazeListener(function (data, elapsedTime) {
